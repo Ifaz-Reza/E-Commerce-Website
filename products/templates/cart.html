@@ -1,0 +1,57 @@
+
+{% extends 'base.html' %}
+
+{% block extra_head %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFavourites();
+        });
+
+
+        function loadFavourites() {
+            const favourites = JSON.parse(localStorage.getItem('favourites')) || [];
+            const favouriteContainer = document.getElementById('favourite');
+            favouriteContainer.innerHTML = ''; // Clear existing content
+            favourites.forEach((favourite, index) => {
+                const card = document.createElement('div');
+                card.classList.add('card', 'mb-3');
+                card.style.width = '18rem';
+                card.innerHTML = `
+                    <img src="${favourite.image}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">${favourite.title}</h5>
+                        <p class="card-text">${favourite.text}</p>
+                        <button class="btn btn-danger" onclick="removeFromFavourites(${index})">&times;</button>
+                    </div>
+                `;
+                favouriteContainer.appendChild(card);
+            });
+        }
+
+
+        function removeFromFavourites(index) {
+            const favourites = JSON.parse(localStorage.getItem('favourites')) || [];
+            favourites.splice(index, 1);
+            localStorage.setItem('favourites', JSON.stringify(favourites));
+            loadFavourites();
+        }
+    </script>
+{% endblock %}
+
+
+{% block content %}
+    <h1 style="color:grey">Cart</h1>
+    <div id="favourite" class="container mt-4"> {% csrf_token %}</div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+

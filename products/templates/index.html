@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block extra_head %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const clickableCard = document.getElementById('card');
+            clickableCard.addEventListener('click', function() {
+                AddNewCard();
+            });
+        });
+
+
+        function AddNewCard() {
+            const cardContainer = document.querySelector('.card-container');
+            const newCard = document.createElement('div');
+            newCard.classList.add('col-12');
+            newCard.innerHTML =
+                `<div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"></h5>
+                        <p class="card-text">This is a new card added to the page.</p>
+                    </div>
+                </div>`;
+            cardContainer.appendChild(newCard);            
+        }
+
+
+        function AddToCart(cardTitle, cardText, cardImage) {
+            const favourites = JSON.parse(localStorage.getItem('favourites')) || [];
+            favourites.push({ title: cardTitle, text: cardText, image: cardImage });
+            localStorage.setItem('favourites', JSON.stringify(favourites));
+            alert('Added to favourites!');
+        }
+    </script>
+{% endblock %}
+
+
+{% block content %}
+<h1 style="font-size: small; text-align: right; color:grey">Welcome, {{ user.username }}!</h1>
+<h1 style="color:grey; text-align:center">Products</h1>
+<div class='row'>
+     {% for product in products %}
+        <div class="col">
+            <div class="card" id="card" name="card" style="width: 18rem;">
+                <img src="{{ product.image_url }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text">${{ product.price }}</p>
+                    <form method="post">
+                        <a href="{% url 'home' %}" class="btn" style="background-color: #080710; color:rgb(250, 241, 241)" onclick="AddToCart('{{ product.name }}', '{{ product.price }}', '{{ product.image_url }}') " id="cartbutton" name="cartbutton">ADD TO CART</a>
+                        <a href="{% url 'buy' %}" class="btn" style="background-color: #080710; color:rgb(250, 241, 241)">BUY</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+     {% endfor %}
+</div>
+<p style="color:rgb(71, 71, 69)">
+This website was created as a project by a computer science student and is not intended for commercial purposes.
+The book PDFs displayed are merely examples to demonstrate the website's functionality and design.
+No actual sales or transactions are conducted on this platform.
+</p>
+{% endblock %}
+
+
+
+
