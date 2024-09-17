@@ -46,6 +46,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ product.name }}</h5>
                     <p class="card-text">${{ product.price }}</p>
+                    <a style="color:grey;" name="details" href="{% url 'details' product.id %}">view details</a>
                     <form method="post">
                         <a href="{% url 'home' %}" class="btn" style="background-color: #080710; color:rgb(250, 241, 241)" onclick="AddToCart('{{ product.name }}', '{{ product.price }}', '{{ product.image_url }}') " id="cartbutton" name="cartbutton">ADD TO CART</a>
                         <a href="{% url 'buy' %}" class="btn" style="background-color: #080710; color:rgb(250, 241, 241)">BUY</a>
